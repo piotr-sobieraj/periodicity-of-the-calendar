@@ -60,6 +60,6 @@ class DatesWithDayOfWeek:
 
     def save_result_to_file(self):
         self.convert_tuples_to_dates()
-        with open("results_1800_2200.csv", "w") as file:
+        with open("results.csv", "w") as file:
             for line in self.result:
                 file.write(str(line) + "\n")
