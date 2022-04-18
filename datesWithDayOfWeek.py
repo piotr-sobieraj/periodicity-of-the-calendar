@@ -5,7 +5,8 @@ class DatesWithDayOfWeek:
         self.calendar = dict()
         self.daysOfWeek = ("pon", "wto", "śro", "czw", "pią", "sob", "nie")
         self.fill_calendar_dates()
-        self.resul = []
+        self.temp_result = []
+        self.result = []
 
     def fill_calendar_dates(self):
         from datetime import date, timedelta
@@ -16,9 +17,15 @@ class DatesWithDayOfWeek:
             day += timedelta(days=1)
 
     def print(self):
-        pass
-        # print(self.calendar[2022, 4, 17])
-
+        from prettytable import PrettyTable
+        import operator
+        self.convert_tuples_to_dates()
+        pretty_result = PrettyTable()
+        pretty_result.field_names = ["Badana data", "Dzień tyg.", "Nast. wystąpienie data", "Za ile lat"]
+        pretty_result.add_rows(self.result)
+        # pretty_result = pretty_result.get_string(sortby="Za ile lat", reversesort=True)
+        pretty_result = pretty_result.get_string(sort_key=operator.itemgetter(0), sortby="Za ile lat", reversesort=True)
+        print(pretty_result)
 
     def find_next_date_with_the_same_weekday(self):
         for day, dayOfWeek in self.calendar.items():
@@ -34,11 +41,23 @@ class DatesWithDayOfWeek:
             for year in range(current_year + 1, last_year):
                 difference_counter += 1
                 if self.get_day_of_week_by_date(current_day, current_month, year) == dayOfWeek:
-                    print(day, (year, current_month, current_day),  self.calendar[year, current_month, current_day], difference_counter)
+                    self.temp_result.append((day, dayOfWeek, (year, current_month, current_day), difference_counter))
+                    # print(day, (year, current_month, current_day),  self.calendar[year, current_month, current_day], difference_counter)
                     break
-
-            # break
 
     def get_day_of_week_by_date(self, current_day, current_month, year):
         return self.calendar.get((year, current_month, current_day))
 
+    def convert_tuples_to_dates(self):
+        for row in self.temp_result:
+            row_start_date = row[0]
+            row_end_date = row[2]
+
+            # print("{:d}-{:02d}-{:02d}".format(row_data[0], row_data[1], row_data[2]))
+            self.result.append((
+                "{:d}-{:02d}-{:02d}".format(row_start_date[0], row_start_date[1], row_start_date[2]),
+                row[1],
+                "{:d}-{:02d}-{:02d}".format(row_end_date[0], row_end_date[1], row_end_date[2]),
+                row[3]
+            ))
+            # row[0] = "{:d}-{:02d}-{:02d}".format(row_start_date[0], row_start_date[1], row_start_date[2])
