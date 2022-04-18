@@ -1,7 +1,7 @@
 class DatesWithDayOfWeek:
     def __init__(self):
-        self.start_year = 2020
-        self.number_of_years = 20
+        self.start_year = 2022
+        self.number_of_years = 30
         self.calendar = dict()
         self.daysOfWeek = ("pon", "wto", "śro", "czw", "pią", "sob", "nie")
         self.fill_calendar_dates()
@@ -21,28 +21,26 @@ class DatesWithDayOfWeek:
         import operator
         self.convert_tuples_to_dates()
         pretty_result = PrettyTable()
-        pretty_result.field_names = ["Badana data", "Dzień tyg.", "Nast. wystąpienie data", "Za ile lat"]
+        pretty_result.field_names = ["Badana data", "Dzień tyg.", "Nast. wystąpienie", "Za ile lat"]
         pretty_result.add_rows(self.result)
-        # pretty_result = pretty_result.get_string(sortby="Za ile lat", reversesort=True)
         pretty_result = pretty_result.get_string(sort_key=operator.itemgetter(0), sortby="Za ile lat", reversesort=True)
+
         print(pretty_result)
 
     def find_next_date_with_the_same_weekday(self):
         for day, dayOfWeek in self.calendar.items():
-            # print(day, dayOfWeek)
             current_year = day[0]
             current_month = day[1]
             current_day = day[2]
-            # print(current_year, current_month, current_day, dayOfWeek)
             last_year = list(self.calendar.keys())[-1][0]
-            # # Looking towards by 1 year
-            # # If dayOfWeeks are equal to each other - add to list
+
+            # Looking towards by 1 year
+            # If dayOfWeeks are equal to each other - add to list
             difference_counter = 0
             for year in range(current_year + 1, last_year):
                 difference_counter += 1
                 if self.get_day_of_week_by_date(current_day, current_month, year) == dayOfWeek:
                     self.temp_result.append((day, dayOfWeek, (year, current_month, current_day), difference_counter))
-                    # print(day, (year, current_month, current_day),  self.calendar[year, current_month, current_day], difference_counter)
                     break
 
     def get_day_of_week_by_date(self, current_day, current_month, year):
@@ -53,11 +51,9 @@ class DatesWithDayOfWeek:
             row_start_date = row[0]
             row_end_date = row[2]
 
-            # print("{:d}-{:02d}-{:02d}".format(row_data[0], row_data[1], row_data[2]))
             self.result.append((
                 "{:d}-{:02d}-{:02d}".format(row_start_date[0], row_start_date[1], row_start_date[2]),
                 row[1],
                 "{:d}-{:02d}-{:02d}".format(row_end_date[0], row_end_date[1], row_end_date[2]),
                 row[3]
             ))
-            # row[0] = "{:d}-{:02d}-{:02d}".format(row_start_date[0], row_start_date[1], row_start_date[2])
