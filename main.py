@@ -4,3 +4,4 @@ if __name__ == '__main__':
     datesWithDayOfWeek = DatesWithDayOfWeek()
     datesWithDayOfWeek.find_next_date_with_the_same_weekday()
     datesWithDayOfWeek.print()
+    # datesWithDayOfWeek.save_result_to_file()

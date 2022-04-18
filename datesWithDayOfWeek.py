@@ -1,7 +1,7 @@
 class DatesWithDayOfWeek:
     def __init__(self):
-        self.start_year = 2022
-        self.number_of_years = 30
+        self.start_year = 2000
+        self.number_of_years = 100
         self.calendar = dict()
         self.daysOfWeek = ("pon", "wto", "śro", "czw", "pią", "sob", "nie")
         self.fill_calendar_dates()
@@ -57,3 +57,9 @@ class DatesWithDayOfWeek:
                 "{:d}-{:02d}-{:02d}".format(row_end_date[0], row_end_date[1], row_end_date[2]),
                 row[3]
             ))
+
+    def save_result_to_file(self):
+        self.convert_tuples_to_dates()
+        with open("results.csv", "w") as file:
+            for line in self.result:
+                file.write(str(line) + "\n")
